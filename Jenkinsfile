@@ -11,14 +11,6 @@ pipeline {
                 git 'https://github.com/Intesar-Haque/docker-test.git'
             }
         }
-//         stage('Docker Build') {
-//            agent any
-//            steps {
-//              sh "ls"
-//              sh 'docker build -t spring .'
-//              sh "ls"
-//            }
-//          }
         stage('Building our image') {
             steps{
                 script {
@@ -26,13 +18,23 @@ pipeline {
                 }
             }
         }
-        stage('Deploying our image') {
+        stage('Deploying to dockerhub') {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
                 }
+            }
+        }
+        stage('Mounting to Kubernetes') {
+            steps{
+                sh "kubectl create deployment webserver --image=$registry:$BUILD_NUMBER"
+            }
+        }
+        stage('Deploying to Kubernetes') {
+            steps{
+                sh "kubectl expose deployment webserver --type=LoadBalancer --port=9000"
             }
         }
         stage('Cleaning up') {
