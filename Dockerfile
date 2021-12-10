@@ -4,6 +4,8 @@ COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline
 COPY src ./src
+RUN ls
 CMD ["./mvnw", "spring-boot:run"]
-COPY target/*.jar app.jar
+RUN ls
+COPY target/app.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
