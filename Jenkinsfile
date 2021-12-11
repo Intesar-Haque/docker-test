@@ -9,27 +9,27 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     stages {
-        stage('Cloning our Git') {
+        stage('Cloning From Git') {
             steps {
                 git 'https://github.com/Intesar-Haque/docker-test.git'
             }
         }
-        stage('Building our image') {
-            steps{
-                script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                }
-            }
-        }
 
-        stage('Scan') {
+        stage('Scanning') {
           steps {
             withSonarQubeEnv(installationName: 'sonar-qube') {
               sh './mvnw clean sonar:sonar'
             }
           }
         }
-        stage('Deploying to dockerhub') {
+        stage('Building image') {
+            steps{
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
+        }
+        stage('Deploying') {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) {
