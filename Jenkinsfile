@@ -38,20 +38,20 @@ pipeline {
                 }
             }
         }
-        stage('Mounting to Kubernetes') {
-            steps{
-                sh "kubectl create deployment webserver --image=$registry:$BUILD_NUMBER"
-            }
-        }
-        stage('Deploying to Kubernetes') {
-            steps{
-                sh "kubectl expose deployment webserver --type=LoadBalancer --port=9000"
-            }
-        }
-        stage('Cleaning up') {
-            steps{
-                sh "docker rmi $registry:$BUILD_NUMBER"
-            }
-        }
+//         stage('Mounting to Kubernetes') {
+//             steps{
+//                 sh "kubectl create deployment webserver --image=$registry:$BUILD_NUMBER"
+//             }
+//         }
+//         stage('Deploying to Kubernetes') {
+//             steps{
+//                 sh "kubectl expose deployment webserver --type=LoadBalancer --port=9000"
+//             }
+//         }
+//         stage('Cleaning up') {
+//             steps{
+//                 sh "docker rmi $registry:$BUILD_NUMBER"
+//             }
+//         }
     }
 }
