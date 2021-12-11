@@ -38,9 +38,9 @@ pipeline {
                 }
             }
         }
-//         stage('Mounting to Kubernetes') {
+//         stage('Creating Server') {
 //             steps{
-//                 sh "kubectl create deployment webserver --image=$registry:$BUILD_NUMBER"
+//                 sh "docker run -p 1000 "
 //             }
 //         }
 //         stage('Deploying to Kubernetes') {
@@ -48,10 +48,10 @@ pipeline {
 //                 sh "kubectl expose deployment webserver --type=LoadBalancer --port=9000"
 //             }
 //         }
-//         stage('Cleaning up') {
-//             steps{
-//                 sh "docker rmi $registry:$BUILD_NUMBER"
-//             }
-//         }
+        stage('Cleaning up') {
+            steps{
+                sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        }
     }
 }
